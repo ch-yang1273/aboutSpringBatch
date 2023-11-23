@@ -14,28 +14,28 @@ import org.springframework.context.annotation.Configuration;
 
 @RequiredArgsConstructor
 @Configuration
-public class HelloJobConfiguration {
+public class DBJobConfiguration {
 
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
     @Bean
-    public Job helloJob() {
-        return jobBuilderFactory.get("helloJob")
-                .start(helloStep())
-                .next(helloStep2())
+    public Job job() {
+        return jobBuilderFactory.get("job")
+                .start(step1())
+                .next(step2())
                 .build();
     }
 
     @Bean
-    public Step helloStep() {
-        return stepBuilderFactory.get("helloStep1")
+    public Step step1() {
+        return stepBuilderFactory.get("step1")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
                         // step은 기본적으로 tasklet을 무한 반복시킨다.
                         System.out.println("===========================");
-                        System.out.println(">> Hello Spring Batch 1 !!!");
+                        System.out.println(">> Step1 Spring Batch!!!");
                         System.out.println("===========================");
                         return RepeatStatus.FINISHED; // 종료
                     }
@@ -44,13 +44,13 @@ public class HelloJobConfiguration {
     }
 
     @Bean
-    public Step helloStep2() {
-        return stepBuilderFactory.get("helloStep1")
+    public Step step2() {
+        return stepBuilderFactory.get("step2")
                 .tasklet(new Tasklet() {
                     @Override
                     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
                         System.out.println("===========================");
-                        System.out.println(">> Hello Spring Batch 2 !!!");
+                        System.out.println(">> Step2 Spring Batch!!!");
                         System.out.println("===========================");
                         return RepeatStatus.FINISHED; // 종료
                     }
